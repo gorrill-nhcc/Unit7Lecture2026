@@ -45,30 +45,55 @@ public class TourLogicService {
     final int ROW_MOVES[] = { 2, 2, -2, -2, 1, 1, -1, -1 };
     final int COL_MOVES[] = { 1, -1, 1, -1, 2, -2, 2, -2 };
     // (4,4) move - 3 ==> (4 + -2, 4 + -1) ==> (2, 3)
+    // move selected => 3
+    // int moveNum = 3;
+    // rowPosition = rowPosition + ROW_MOVES[moveNum];
+    // colPosiiton = colPosition + COL_MOVES[moveNum];
 
     // if the [row, col] is a valid cell, place the marker and return true
     public boolean startTour(int marker, int row, int col) {
-
+        if(board.validCell(row, col)){
+            board.placePiece(marker, row, col);
+            rowPosition = row;
+            colPosition = col;
+            return true;
+        }
         return false;
     }
 
     // makeKnightMove() if moveIndex results in a valid cell on the board
     public boolean tryMove(int moveIndex, int marker) {
-
+        int proposedRow = calcColMove(moveIndex);
+        int proposedCol = calcColMove(moveIndex);
+        if(board.validCell(proposedRow, proposedCol) && 
+        !board.cellVisited(proposedRow, proposedCol)){
+            makeKnightMove(marker, proposedRow, proposedCol);
+            rowPosition = proposedRow;
+            colPosition = proposedCol;
+            return true;
+        }
         return false;
     }
 
+    // int moveNum = 3;
+    // rowPosition = rowPosition + ROW_MOVES[moveNum];
+    // colPosiiton = colPosition + COL_MOVES[moveNum];
     public int calcRowMove(int moveIndex) {
-        return -1;
+        return rowPosition + ROW_MOVES[moveIndex];
     }
 
     public int calcColMove(int moveIndex) {
-        return -1;
+        return colPosition + COL_MOVES[moveIndex];
     }
 
     // Pick first move from available moves? A random move? Develop a heuristic?
     public int pickBestAvailableMove() {
-
+        // this will get fixed!
+        ArrayList<Integer> moves = getAvailableMoves();
+        if(moves.size() > 0){
+            int randIndex =(int)(Math.random() * moves.size());
+            return moves.get(randIndex);
+        }
         return -1;
     }
 
@@ -76,11 +101,19 @@ public class TourLogicService {
     public ArrayList<Integer> getAvailableMoves() {
         // instantiate the list
         ArrayList<Integer> moves = new ArrayList<>();
-
+        for(int i = 0; i < ROW_MOVES.length; i++){
+            int proposedRow = calcColMove(i);
+            int proposedCol = calcColMove(i);
+            boolean validCell = board.validCell(proposedRow, proposedCol) 
+            && !board.cellVisited(proposedRow, proposedCol);
+            if(validCell){
+                moves.add(i);
+            }
+        }
         return moves;
     }
 
     private void makeKnightMove(int marker, int row, int col) {
-
+        board.placePiece(marker, row, col);
     }
 }
