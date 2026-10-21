@@ -8,9 +8,9 @@ public class TooDeeTraversals {
     }
 
     public static void printReverse(int[][] arr){
-        for(/*fill this in*/){
-            for(/*fill this in*/){
-                System.out.println(arr[?][?] + ", ");
+        for(int i = arr.length - 1; i >= 0; i--){ // row loop
+            for(int j = arr[i].length - 1; j >= 0; j--){
+                System.out.println(arr[i][j] + ", ");
             }
         }
     }
@@ -21,15 +21,25 @@ public class TooDeeTraversals {
             // you need two traversals in here
             // i is even, traverse forward
             // i is odd, traverse backward
+            if(i % 2 == 0){
+                for(int j = 0; j < arr[i].length; j++){
+                    System.out.println(arr[i][j] + ", ");
+                }
+            } else {
+                for (int j = arr[i].length - 1; j >= 0; j--) {
+                    System.out.println(arr[i][j] + ", ");
+                }
+            }
         }
     }
     // select all based on defined criteria
     public static ArrayList<Integer> selectOnlyOdd(int[][] arr){
-        ArrayList<Integer> out = new ArrayList<>();
+        ArrayList<Integer> out = new ArrayList<>(); // List size() == 0
+
         for(int[] inner : arr){
             for(int n : inner){
-                if(n % 2 == 0){
-                    out.add(n);
+                if(n % 2 != 0){
+                    out.add(n); // append - adds the item to the end of the list
                 }
             }
         }
@@ -37,6 +47,7 @@ public class TooDeeTraversals {
     }
 
     // cell validation
+    // validCell(mat1, -5, 5) -> mat1.length == 10 mat1[0] == 8
     public static boolean validCell(int[][] arr, int row, int col){
         boolean valid = true;
         boolean validRow = row >= 0 && row < arr.length;
