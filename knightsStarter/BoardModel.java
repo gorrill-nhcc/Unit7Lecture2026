@@ -51,7 +51,7 @@ public class BoardModel {
 
     public void printBoard(){
         for(int [] row : board){
-            System.out.println(Arrays.toString(board));
+            System.out.println(Arrays.toString(row)); // fixed bug
         }
     }
 

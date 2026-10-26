@@ -63,7 +63,7 @@ public class TourLogicService {
 
     // makeKnightMove() if moveIndex results in a valid cell on the board
     public boolean tryMove(int moveIndex, int marker) {
-        int proposedRow = calcColMove(moveIndex);
+        int proposedRow = calcRowMove(moveIndex); // bug here
         int proposedCol = calcColMove(moveIndex);
         if(board.validCell(proposedRow, proposedCol) && 
         !board.cellVisited(proposedRow, proposedCol)){
@@ -102,7 +102,7 @@ public class TourLogicService {
         // instantiate the list
         ArrayList<Integer> moves = new ArrayList<>();
         for(int i = 0; i < ROW_MOVES.length; i++){
-            int proposedRow = calcColMove(i);
+            int proposedRow = calcRowMove(i); // bug here
             int proposedCol = calcColMove(i);
             boolean validCell = board.validCell(proposedRow, proposedCol) 
             && !board.cellVisited(proposedRow, proposedCol);
