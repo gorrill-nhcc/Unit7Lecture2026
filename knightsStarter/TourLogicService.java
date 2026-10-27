@@ -38,6 +38,21 @@ public class TourLogicService {
     private int rowPosition;
     private int colPosition;
 
+    // this is constant and is used to initialize and reset the living access array
+    private final int[][] ACCESSIBILITY_MODEL = {
+            { 2, 3, 4, 4, 4, 4, 3, 2 },
+            { 3, 4, 6, 6, 6, 6, 4, 3 },
+            { 4, 6, 8, 8, 8, 8, 6, 4 },
+            { 4, 6, 8, 8, 8, 8, 6, 4 },
+            { 4, 6, 8, 8, 8, 8, 6, 4 },
+            { 4, 6, 8, 8, 8, 8, 6, 4 },
+            { 3, 4, 6, 6, 6, 6, 4, 3 },
+            { 2, 3, 4, 4, 4, 4, 3, 2 }
+    };
+
+    // this is the living accessibility array
+    private int[][] accessVals;
+
     public TourLogicService(BoardModel board) {
         this.board = board;
     }
