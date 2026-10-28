@@ -1,6 +1,7 @@
 package knightsStarter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * TourLogicService: The "Engine" of the Knight's Tour simulation.
@@ -38,6 +39,13 @@ public class TourLogicService {
     private int rowPosition;
     private int colPosition;
 
+    /**
+     * for(int i = 0; i < accessModel.length; i++){
+        * for(int j = 0; j < accessModel[i].length; j++){
+        * accessVals[i][j] = ACESS_MODEL[i][j];
+        * }
+     * }
+     */
     // this is constant and is used to initialize and reset the living access array
     private final int[][] ACCESSIBILITY_MODEL = {
             { 2, 3, 4, 4, 4, 4, 3, 2 },
@@ -51,12 +59,16 @@ public class TourLogicService {
     };
 
     // this is the living accessibility array
-    private int[][] accessVals;
+    private int[][] accessVals; // initially null, need to instantiate
 
     public TourLogicService(BoardModel board) {
         this.board = board;
+        accessVals = new int[ACCESSIBILITY_MODEL.length][ACCESSIBILITY_MODEL[0].length];
+        updateAccessVals(ACCESSIBILITY_MODEL);
+        printAccessVals();
     }
 
+    
     final int ROW_MOVES[] = { 2, 2, -2, -2, 1, 1, -1, -1 };
     final int COL_MOVES[] = { 1, -1, 1, -1, 2, -2, 2, -2 };
     // (4,4) move - 3 ==> (4 + -2, 4 + -1) ==> (2, 3)
@@ -67,7 +79,7 @@ public class TourLogicService {
 
     // if the [row, col] is a valid cell, place the marker and return true
     public boolean startTour(int marker, int row, int col) {
-        if(board.validCell(row, col)){
+        if(board.validCell(row, col) && !board.cellVisited(row, col)){
             board.placePiece(marker, row, col);
             rowPosition = row;
             colPosition = col;
@@ -105,11 +117,21 @@ public class TourLogicService {
     public int pickBestAvailableMove() {
         // this will get fixed!
         ArrayList<Integer> moves = getAvailableMoves();
-        if(moves.size() > 0){
-            int randIndex =(int)(Math.random() * moves.size());
-            return moves.get(randIndex);
+        int lowAccess = 9;
+        int bestMove = -1;
+
+        // [2, 5, 6, 7]
+        for(int i = 0; i < moves.size(); i++){
+            int proposedRow = calcRowMove(moves.get(i));
+            int proposedCol = calcColMove(moves.get(i));
+            int currentAccess = accessVals[proposedRow][proposedCol];
+            if(currentAccess < lowAccess){
+                lowAccess = currentAccess;
+                bestMove = moves.get(i);
+            }
         }
-        return -1;
+        
+        return bestMove;
     }
 
     // return a list of all available move numbers on the board.
@@ -130,5 +152,20 @@ public class TourLogicService {
 
     private void makeKnightMove(int marker, int row, int col) {
         board.placePiece(marker, row, col);
+    }
+
+    private void updateAccessVals(int[][] accessModel){
+        for(int i = 0; i < accessModel.length; i++){
+            for(int j = 0; j < accessModel[i].length; j++){
+                accessVals[i][j] = accessModel[i][j];
+                // accessVals[i][j] = ACCESSIBILITY_MODEL[i][j];
+            }
+        }
+    }
+
+    public void printAccessVals(){
+        for(int[] row: accessVals){
+            System.out.println(Arrays.toString(row));
+        }
     }
 }
