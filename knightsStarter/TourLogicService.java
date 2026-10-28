@@ -113,9 +113,23 @@ public class TourLogicService {
         return colPosition + COL_MOVES[moveIndex];
     }
 
+    public int pickRandomMove(){
+        return -1;
+    }
+
+    public int pickFirstMove(){
+        return -1;
+    }
+
+    public int userPicksMove(){
+        // scanner here and pick a move
+        return -1;
+    }
+
     // Pick first move from available moves? A random move? Develop a heuristic?
     public int pickBestAvailableMove() {
         // this will get fixed!
+        //this picks all available moves
         ArrayList<Integer> moves = getAvailableMoves();
         int lowAccess = 9;
         int bestMove = -1;
@@ -132,6 +146,15 @@ public class TourLogicService {
         }
         
         return bestMove;
+    }
+
+    public void reduceAccessVals(){
+        ArrayList<Integer> moves = getAvailableMoves();
+        for(int i = 0; i < moves.size(); i++){
+            int proposedRow = calcRowMove(moves.get(i));
+            int proposedCol = calcColMove(moves.get(i));
+            accessVals[proposedRow][proposedCol]--;
+        }
     }
 
     // return a list of all available move numbers on the board.
@@ -151,6 +174,7 @@ public class TourLogicService {
     }
 
     private void makeKnightMove(int marker, int row, int col) {
+        accessVals[row][col] = 0;
         board.placePiece(marker, row, col);
     }
 

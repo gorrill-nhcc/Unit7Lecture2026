@@ -6,5 +6,6 @@ public class Main {
         TourRunner manager = new TourRunner(4, 4);
         manager.runBasicTour(brains);
         model.printBoard();
+        brains.printAccessVals();
     }
 }

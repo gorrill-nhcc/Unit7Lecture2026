@@ -30,6 +30,9 @@ public class TourRunner {
                 //int randMove = (int)(Math.random() * moves.size());
             
                 moveMade = service.tryMove(service.pickBestAvailableMove(), moveCounter);
+                if(moveMade){
+                    service.reduceAccessVals();
+                }
             }
                 //i forgot to update the position of the knight!
             running = moveMade && moveCounter < 64;
